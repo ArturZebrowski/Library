@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Told - Borrow a book!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <img src="assets/logo.webp" alt="Told">
+    </header>
+    <nav>
+        <h2>The first month of renting a book<br>
+            <strong>for free</strong></h2>
+        <span></span>
+        <a class="rent" href="#smooth">
+            <h1>RENT</h1>
+            <img src="assets/arrow-right.webp" alt="">
+        </a>
+    </nav>
+    <main>
+            <?php
+            //wyswietlanie ksiazek
+                $sql = 'SELECT `id_book`,`Title`,`Author`,`Release_date`,`Status`,`image` FROM `book`';
+                $db = new mysqli('localhost','root','','library');
+                $result = $db->query($sql);
+                while($row = $result->fetch_assoc()) {
+                    $id = $row['id_book']+2137;
+                    $title = $row['Title'];
+                    $author = $row['Author'];
+                    $release_date = $row['Release_date'];
+                    $status = $row['Status'];
+                    $image = $row['image'];
+
+                    echo "<div class='select'>";
+                    echo "<p> <img src='$image' alt='$title' id='image'> </p>";
+                    echo "<p> ISBN: $id<br> Title: $title<br> Author: $author<br> Release date: $release_date<br> <span>$status</span><br></p>";
+                    echo "</div>";
+                }
+
+                $db->close();
+            ?>
+    </main>
+
+    <article id="smooth">
+        <div class=container1>
+            <label for="user">Enter your ID:</label><br>
+            <input type="number" id="user" min="1" max="5"><br>
+
+            <label for="isbn" title="The ISBN number of the book<br> you want to borrow">The ISBN number:</label><br>
+            <input type="number" id="isbn" min="1" max="6">
+        </div>
+
+        <div class="container2">
+            <button>RENT</button>
+
+            <!-- <p>Kupa została załadowana do kibelka</p> -->
+        </div>
+    </article>
+    <footer>
+
+    </footer>
+</body>
+</html>

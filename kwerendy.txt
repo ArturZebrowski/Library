@@ -1,0 +1,16 @@
+Wypożyczenie książki (przypisanie książki do użytkownika i zmiana jej statusu na "wypożyczona")
+INSERT INTO `borrow` (`id_user`,`id_book`,`Rental_date``Delivery_date``Borrow_status`) VALUES (user?, book?, currentdate?, NULL, 0);
+UPDATE book SET Status=unavailable WHERE id_book=book?
+SELECT * FROM `borrow` ORDER BY `id_borrow` DESC LIMIT 1; //twoje zamowienie ma nr...
+
+Zwrot książki (usunięcie informacji o wypożyczeniu użytkownika i zmiana statusu książki na "dostępna")
+UPDATE book SET Status=available WHERE id_book=book?
+UPDATE borrow SET Delivery_date=currentdate? AND Borrow_status=1;
+
+Sprawdzenie dostępności książki
+SELECT `Title`,`Author`,`Release_date` FROM `book` WHERE `Status`='available'
+SELECT `Title`,`Author`,`Release_date` FROM `book` WHERE `Status`='unavailable'????
+
+Obliczenie kary za opóźnienie w zwrocie książki (jeśli dotyczy)
+SELECT `id_user` FROM `borrow` WHERE `Delivery_date` IS NULL AND `Penalty` IS NULL AND `Rental_date` OLDEST 1MONTH
+UPDATE `borrow` SET Penalty=i+10 WHERE id_user=^^
