@@ -28,7 +28,7 @@
         <?php
         //wyswietlanie ksiazek
             $conn = mysqli_connect('localhost','root','','library');
-            $sql = 'SELECT `id_book`,`Title`,`Author`,`Release_date`,`Available`,`image` FROM `books`';
+            $sql = "SELECT `id_book`,`Title`,`Author`,`Release_date`,`Available`,`image` FROM `books`";
             $res = mysqli_query($conn, $sql);
             while($row = mysqli_fetch_assoc($res)) {
                 $id = $row['id_book']+2137;
@@ -62,10 +62,23 @@
                 <button id="return" name="return">RETURN</button>
             </div>
             <?php
+            if(isset($_POST['rent']) && (!empty($_POST['user'])) && (!empty($_POST['isbn']))) {
+            // Pobieranie danych z formularza
+            $user=$_POST["user"];
+            $isbn=$_POST["isbn"]-2137;
+            
+            // Sprawdzanie czy podane ID użytkownika i ISBN książki istnieją w bazie danych
+            $check_user = "SELECT * FROM `users` WHERE `id_user` = $user";
+            $check_book = "SELECT * FROM `books` WHERE `id_book` = $isbn";
+            $res_user = mysqli_query($conn, $check_user);
+            $res_book = mysqli_query($conn, $check_book);
+            if(mysqli_num_rows($res_user) == 0){
+                echo "<p>Invalid user ID</p>";
+            }else if(mysqli_num_rows($res_book) == 0){
+                echo "<p>Invalid ISBN</p>";
+            }else{
             //wypozyczenie ksiazki
                 if(isset($_POST['rent']) && (!empty($_POST['user'])) && (!empty($_POST['isbn'])) && (is_numeric($_POST['isbn']))) {
-                    $user=$_POST["user"];
-                    $isbn=$_POST["isbn"]-2137;
 
                     $sql1="INSERT INTO `borrow` (`id_borrow`,`id_user`,`id_book`,`Rental_date`,`Delivery_date`) VALUES ('','$user', '$isbn', NOW(), NULL);";
                     $sql2="UPDATE `books` SET `Available`='unavailable' WHERE `id_book`=$isbn;";
@@ -78,12 +91,26 @@
                 }else if(isset($_POST['rent'])){
                     echo "<p>Fill in the fields</p>";
                 }
+            }}
 
+            if(isset($_POST['rent']) && (!empty($_POST['user'])) && (!empty($_POST['isbn']))) {
+                // Pobieranie danych z formularza
+                $user=$_POST["user"];
+                $isbn=$_POST["isbn"]-2137;
+                
+                // Sprawdzanie czy podane ID użytkownika i ISBN książki istnieją w bazie danych
+                $check_user = "SELECT * FROM `users` WHERE `id_user` = $user";
+                $check_book = "SELECT * FROM `books` WHERE `id_book` = $isbn";
+                $res_user = mysqli_query($conn, $check_user);
+                $res_book = mysqli_query($conn, $check_book);
+                if(mysqli_num_rows($res_user) == 0){
+                    echo "<p>Invalid user ID</p>";
+                }else if(mysqli_num_rows($res_book) == 0){
+                    echo "<p>Invalid ISBN</p>";
+                }else{
             //oddanie ksiazki
                 if(isset($_POST['return']) && (!empty($_POST['user'])) && (!empty($_POST['isbn'])) && (is_numeric($_POST['isbn']))) {
-                    $user=$_POST["user"];
-                    $isbn=$_POST["isbn"]-2137;
-    
+
                     $sql3="UPDATE `borrow` SET `Delivery_date`=NOW() WHERE `id_user`=$user AND `id_book`=$isbn;";
                     $sql4="UPDATE `books` SET `Available`='available' WHERE `id_book`=$isbn;";
                     $res3=mysqli_query($conn, $sql3);
@@ -97,9 +124,7 @@
                 }
 
                 if(isset($_POST['return']) && (!empty($_POST['user'])) && (!empty($_POST['isbn'])) && (is_numeric($_POST['isbn']))) {
-                    $user=$_POST["user"];
-                    $isbn=$_POST["isbn"]-2137;
-                    
+
                     $sqlhide1="SELECT `Delivery_date` FROM `borrow` WHERE `id_user`=$user AND `id_book`=$isbn;";
                     $reshide1=mysqli_query($conn, $sqlhide1);
 
@@ -117,19 +142,23 @@
                 }
 
                 if(isset($_POST['return']) && (!empty($_POST['user'])) && (!empty($_POST['isbn']))  && (is_numeric($_POST['isbn'])) && $diff->invert == 1) {
-                    $user=$_POST["user"];
-                    $isbn=$_POST["isbn"]-2137;
 
                     $sql5="UPDATE `users` SET `Penalty`=`Penalty`+($penalty*10) WHERE `id_user`=$user;";
                     $res5=mysqli_query($conn, $sql5); 
                 }
+                }}
+
+                mysqli_close($conn);
             ?>
         </form>
     </section>
 
     <footer>
                 <p>Author: Artur Żebrowski C7</p>
+            <div class="href">
                 <a href="library.sql" download>Download database</a>
+                <a href="users.php" target="blank">See users</a>|
+            </div>
     </footer>
     
     <script src=app.js></script>

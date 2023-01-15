@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 09 Sty 2023, 18:25
+-- Czas generowania: 15 Sty 2023, 20:05
 -- Wersja serwera: 10.4.22-MariaDB
 -- Wersja PHP: 8.0.13
 
@@ -32,7 +32,7 @@ CREATE TABLE `books` (
   `Title` varchar(25) COLLATE utf8_polish_ci DEFAULT NULL,
   `Author` varchar(40) COLLATE utf8_polish_ci DEFAULT NULL,
   `Release_date` year(4) DEFAULT NULL,
-  `Status` varchar(50) COLLATE utf8_polish_ci DEFAULT NULL,
+  `Available` varchar(50) COLLATE utf8_polish_ci DEFAULT NULL,
   `image` varchar(25) COLLATE utf8_polish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
@@ -40,9 +40,9 @@ CREATE TABLE `books` (
 -- Zrzut danych tabeli `books`
 --
 
-INSERT INTO `books` (`id_book`, `Title`, `Author`, `Release_date`, `Status`, `image`) VALUES
+INSERT INTO `books` (`id_book`, `Title`, `Author`, `Release_date`, `Available`, `image`) VALUES
 (1, 'Kordian', 'Juliusz Słowacki', 1901, 'available', 'assets/img1.webp'),
-(2, 'Lalka', 'Bolesław Prus', 1903, 'available', 'assets/img2.webp'),
+(2, 'Lalka', 'Bolesław Prus', 1903, 'unavailable', 'assets/img2.webp'),
 (3, 'Dziady cz.4', 'Adam Mickiewicz', 1905, 'available', 'assets/img3.webp'),
 (4, 'Wesele', 'Stanisław Wyspiański', 1908, 'available', 'assets/img4.webp'),
 (5, 'Chłopcy z placu broni', 'Ferenc Molnár', 1911, 'available', 'assets/img5.webp'),
@@ -62,6 +62,14 @@ CREATE TABLE `borrow` (
   `Delivery_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
+--
+-- Zrzut danych tabeli `borrow`
+--
+
+INSERT INTO `borrow` (`id_borrow`, `id_user`, `id_book`, `Rental_date`, `Delivery_date`) VALUES
+(63, 1, 3, '2022-02-15', '2023-01-15'),
+(64, 1, 2, '2023-01-15', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -71,18 +79,19 @@ CREATE TABLE `borrow` (
 CREATE TABLE `users` (
   `id_user` int(10) UNSIGNED NOT NULL,
   `Firstname` varchar(25) COLLATE utf8_polish_ci DEFAULT NULL,
-  `Lastname` varchar(25) COLLATE utf8_polish_ci DEFAULT NULL
+  `Lastname` varchar(25) COLLATE utf8_polish_ci DEFAULT NULL,
+  `Penalty` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
 -- Zrzut danych tabeli `users`
 --
 
-INSERT INTO `users` (`id_user`, `Firstname`, `Lastname`) VALUES
-(1, 'Kordian', 'Ręka'),
-(2, 'Marta', 'Ogórek'),
-(3, 'Adam', 'Górak'),
-(4, 'Tomasz', 'Zawadzki');
+INSERT INTO `users` (`id_user`, `Firstname`, `Lastname`, `Penalty`) VALUES
+(1, 'Kordian', 'Ręka', 29750),
+(2, 'Marta', 'Ogórek', NULL),
+(3, 'Adam', 'Górak', NULL),
+(4, 'Tomasz', 'Zawadzki', NULL);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -120,7 +129,7 @@ ALTER TABLE `books`
 -- AUTO_INCREMENT dla tabeli `borrow`
 --
 ALTER TABLE `borrow`
-  MODIFY `id_borrow` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_borrow` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT dla tabeli `users`

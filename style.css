@@ -92,7 +92,7 @@ main {
     width: 510px;
     height: 270px;
     letter-spacing: 1px;
-    line-height: 200%;
+    line-height: 2em;
 }
 
 #status {
@@ -100,6 +100,7 @@ main {
     background-color: black;
     padding: 2px;
     border-radius: 5px;
+    margin-left: 1.4em;
 }
 
 #image {
@@ -140,7 +141,8 @@ form p {
 .container3 {
     display: flex;
     justify-content: right;
-    margin-right: 0;
+    right: 0;
+    transform: translateX(6em);
 }
 
 input {
@@ -216,6 +218,98 @@ footer {
     margin-top: 3rem;
 }
 
-footer a {
+.href {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20%;
     opacity: 0.3;
+    padding: 0;
+}
+
+@media only screen and (max-width: 500px){
+    * {
+        margin: 0;
+    }
+
+    html {
+        margin: 0;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    nav {
+        color: white;
+        text-align: right;
+        background-size: 40em;
+    }
+
+    .rent {
+        position: absolute;
+        transform: translateX(-10.5em);
+        color: white;
+    }
+
+    main {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100px;
+        height: 100rem;
+        transform: translateX(2em);
+    }
+
+    .select {
+        width: 255px;
+        height: 255px;
+        line-height: 1.3em;
+    }
+
+    #image {
+        display: block;
+        width: 112.5px;
+        height: 159.75px;
+        margin: 0;
+    }
+
+    #status {
+        margin: 0;
+    }
+
+    nav>span {
+        display: none;
+    }
+
+    .container2 {
+        position: absolute;
+        left: 6;
+        transform: translate(0.5em, 6em);
+    }
+
+    .container3 {
+        position: absolute;
+        right: 0;
+        transform: translateX(-35px);
+    }
+
+    form p {
+        color: red;
+        width: auto;
+        padding: 3px;
+        bottom: 0;
+        transform: translateX(-20px);
+        position: fixed;
+    }
+}
+
+@media only screen and (max-width: 1600px){
+    * {
+        margin: 1rem 5%;
+    }
+
+    .select {
+        transform: translateX(-50px);
+    }
 }
